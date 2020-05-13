@@ -6,19 +6,22 @@ import {ResponseProduct} from '../models/responseProduct';
 
 @Injectable()
 export class DataService {
-  @Output() dialogData: EventEmitter<Product> = new EventEmitter();
-
   private readonly API_URL = 'https://app-search.prod.de.metro-marketplace.cloud/api/search';
   private readonly PRODUCT_PAGE_BASE_URL = 'https://www.metro.de/marktplatz/product/';
+  private dataList: BehaviorSubject<Product[]> = new BehaviorSubject<Product[]>([]);
 
-  dataList: BehaviorSubject<Product[]> = new BehaviorSubject<Product[]>([]);
   totalProductsCount: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  dataListUpdated: BehaviorSubject<Boolean> = new BehaviorSubject<Boolean>(false);
 
-  constructor (private httpClient: HttpClient) {}
-
-  get data(): Product[] {
-    return this.dataList.value;
+  constructor (private httpClient: HttpClient) {
+    this.dataList.subscribe(() => {
+      this.dataListUpdated.next(true);
+    });
   }
+
+  // get data(): Product[] {
+  //   return this.dataList.value;
+  // }
 
   /**
    * FIND_ME Task 4
@@ -74,12 +77,35 @@ export class DataService {
    * Aim is to remove access to this.exampleDatabase.dataList.value from outside of this service and make `dataList` private.
    */
   addIssue (issue: Product): void {
-    this.dialogData.emit(issue);
+    const dataList = this.dataList.value.slice();
+    dataList.push(issue);
+    this.dataList.next(dataList);
   }
 
   updateIssue (issue: Product): void {
-    this.dialogData.emit(issue);
+    const foundIndex = this.dataList.value.findIndex(x => {
+      return x.id === issue.id;
+    });
+
+    this.dataList.value[foundIndex] = issue;
   }
 
-  deleteIssue (id: number): void {}
+  deleteIssue (id: number): void {
+    const dataList = this.dataList.value.filter((product) => product.id !== id);
+    this.dataList.next(dataList);
+  }
+
+  find(id: number) {
+    return this.dataList.value.find(x => x.id === id);
+  }
+
+  filter(filter: string) {
+    return this.dataList.value.slice().filter((issue: Product) => {
+      if (issue) {
+        return issue.id.toString().toUpperCase().indexOf(filter) > -1 ||
+          issue.name.toUpperCase().indexOf(filter) > -1 ||
+          issue.price.toString().toUpperCase().indexOf(filter) > -1;
+      }
+    });
+  }
 }

@@ -27,7 +27,6 @@ export class AppComponent implements OnInit {
   pageEvent: PageEvent;
   index: number;
   id: number;
-  dialogData: Product;
 
   constructor(public httpClient: HttpClient,
               public dialog: MatDialog,
@@ -39,10 +38,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.loadData();
-
-    this.dataService.dialogData.subscribe((dialogData: Product) => {
-      this.dialogData = dialogData;
-    });
   }
 
   refresh() {
@@ -50,52 +45,59 @@ export class AppComponent implements OnInit {
   }
 
   addNew() {
-    const dialogRef = this.dialog.open(AddDialogComponent);
+    const dialogRef = this.dialog.open(AddDialogComponent, {
+      data: {
+        product: new Product(),
+        dataService: this.exampleDatabase,
+      }
+    });
 
     dialogRef.afterClosed().subscribe(() => {
-      this.exampleDatabase.dataList.value.push(this.dialogData);
       this.refreshTable();
     });
   }
 
   viewProduct(id: number) {
     this.dialog.open(ViewDialogComponent, {
-      data: this.exampleDatabase.dataList.value.find(x => x.id === id)
+      data: {
+        product: this.exampleDatabase.find(id)
+      }
     });
   }
 
   startEdit(id: number) {
     const dialogRef = this.dialog.open(EditDialogComponent, {
-      data: this.exampleDatabase.dataList.value.find(x => x.id === id)
+      data: {
+        product: this.exampleDatabase.find(id),
+        dataService: this.exampleDatabase,
+      }
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      const foundIndex = this.exampleDatabase.dataList.value.findIndex(x => x.id === id);
-      this.exampleDatabase.dataList.value[foundIndex] = this.dialogData;
       this.refreshTable();
     });
   }
 
   deleteItem(id: number) {
     const dialogRef = this.dialog.open(DeleteDialogComponent, {
-      data: this.exampleDatabase.dataList.value.find(x => x.id === id)
+      data: {
+        product: this.exampleDatabase.find(id),
+        dataService: this.exampleDatabase,
+      }
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      const foundIndex = this.exampleDatabase.dataList.value.findIndex(x => x.id === id);
-      this.exampleDatabase.dataList.value.splice(foundIndex, 1);
       this.refreshTable();
     });
   }
-
 
   private refreshTable() {
     this.paginator._changePageSize(this.paginator.pageSize);
   }
 
   public loadData() {
-    this.exampleDatabase = new DataService(this.httpClient);
-    this.dataSource = new ProductDataSource(this.exampleDatabase, this.paginator, this.sort);
+    this.exampleDatabase = this.exampleDatabase || new DataService(this.httpClient);
+    this.dataSource = this.dataSource || new ProductDataSource(this.exampleDatabase, this.paginator, this.sort);
     this.exampleDatabase.totalProductsCount.subscribe(val => this.totalCount = val);
     fromEvent(this.filter.nativeElement, 'keyup').pipe(debounceTime(150), distinctUntilChanged())
       .subscribe(() => {

@@ -1,36 +1,26 @@
 <div class="container">
-  <h3 mat-dialog-title>Product id: {{data.id}}</h3>
+  <h3 mat-dialog-title>Product id: {{data.product.id}}</h3>
 
   <form class="mat-dialog-content" #formControl="ngForm">
 
     <div class="form">
-      <mat-form-field color="accent">
-        <span class="form-control">{{data.id}}</span>
-      </mat-form-field>
+      <span>{{data.product.id}}</span>
     </div>
 
     <div class="form">
-      <mat-form-field color="accent">
-        <span class="form-control">{{data.name}}</span>
-      </mat-form-field>
+      <span>{{data.product.name}}</span>
     </div>
 
     <div class="form">
-      <mat-form-field color="accent">
-        <span class="form-control">{{data.image}}</span>
-      </mat-form-field>
+      <span>{{data.product.image}}</span>
     </div>
 
     <div class="form">
-      <mat-form-field color="accent">
-        <span>{{data.url}}</span>
-      </mat-form-field>
+      <span>{{data.product.url}}</span>
     </div>
 
     <div class="form">
-      <mat-form-field color="accent">
-        <span>{{data.price}}</span>
-      </mat-form-field>
+      <span>{{data.product.price}}</span>
     </div>
 
     <div mat-dialog-actions>

@@ -30,7 +30,7 @@ export class ProductDataSource extends DataSource<Product> {
   connect(): Observable<Product[]> {
     // Listen for any changes in the base data, sorting, filtering, or pagination
     const displayDataChanges = [
-      this.exampleDatabase.dataList,
+      this.exampleDatabase.dataListUpdated,
       this.sort.sortChange,
       this.filterChange,
       this.paginator.page
@@ -50,11 +50,7 @@ export class ProductDataSource extends DataSource<Product> {
        */
         const filter = this.filterChange.getValue().toUpperCase();
 
-        this.filteredData = this.exampleDatabase.data.slice().filter((issue: Product) => {
-          return issue.id.toString().toUpperCase().indexOf(filter) > -1 ||
-            issue.name.toUpperCase().indexOf(filter) > -1 ||
-            issue.price.toString().toUpperCase().indexOf(filter) > -1;
-        });
+        this.filteredData = this.exampleDatabase.filter(filter);
 
         // Sort filtered data
         const sortedData = this.sortData(this.filteredData.slice());
