@@ -25,7 +25,7 @@ export class ProductDataSource extends DataSource<Product> {
               public sort: MatSort) {
     super();
     // Reset to the first page when the user changes the filter.
-    this.filterChange.subscribe(() => this.paginator.pageIndex = 0);
+    this.filterChange.subscribe(() => {this.paginator.pageIndex = 0});
   }
   connect(): Observable<Product[]> {
     // Listen for any changes in the base data, sorting, filtering, or pagination
@@ -48,7 +48,13 @@ export class ProductDataSource extends DataSource<Product> {
        * - price
        * SO it could be substring of one of the properties (owar in "Samowar")
        */
-        this.filteredData = this.exampleDatabase.data.slice().filter((issue: Product) => { return issue; });
+        const filter = this.filterChange.getValue().toUpperCase();
+
+        this.filteredData = this.exampleDatabase.data.slice().filter((issue: Product) => {
+          return issue.id.toString().toUpperCase().indexOf(filter) > -1 ||
+            issue.name.toUpperCase().indexOf(filter) > -1 ||
+            issue.price.toString().toUpperCase().indexOf(filter) > -1;
+        });
 
         // Sort filtered data
         const sortedData = this.sortData(this.filteredData.slice());
