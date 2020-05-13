@@ -82,6 +82,24 @@ export class ProductDataSource extends DataSource<Product> {
      * this.sort.active: string (id|name|url|price)
      * this.sort.direction: string (asc|desc)
      */
-    return data.sort();
+    return data.sort((a, b) => {
+      if (a[this.sort.active] > b[this.sort.active]) {
+        if (this.sort.direction === 'asc') {
+          return -1;
+        } else {
+          return 1;
+        }
+      }
+
+      if (a[this.sort.active] < b[this.sort.active]) {
+        if (this.sort.direction === 'asc') {
+          return 1;
+        } else {
+          return -1;
+        }
+      }
+
+      return 0;
+    });
   }
 }
