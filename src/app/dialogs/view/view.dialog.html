@@ -1,0 +1,48 @@
+<div class="container">
+  <h3 mat-dialog-title>Product id: {{data.id}}</h3>
+
+  <form class="mat-dialog-content" #formControl="ngForm">
+
+    <div class="form">
+      <mat-form-field color="accent">
+        <span class="form-control">{{data.id}}</span>
+      </mat-form-field>
+    </div>
+
+    <div class="form">
+      <mat-form-field color="accent">
+        <span class="form-control">{{data.name}}</span>
+      </mat-form-field>
+    </div>
+
+    <div class="form">
+      <mat-form-field color="accent">
+        <span class="form-control">{{data.image}}</span>
+      </mat-form-field>
+    </div>
+
+    <div class="form">
+      <mat-form-field color="accent">
+        <span>{{data.url}}</span>
+      </mat-form-field>
+    </div>
+
+    <div class="form">
+      <mat-form-field color="accent">
+        <span>{{data.price}}</span>
+      </mat-form-field>
+    </div>
+
+    <div mat-dialog-actions>
+      <button mat-button (click)="onCancel()" tabindex="-1">Cancel</button>
+    </div>
+  </form>
+</div>
+
+<!--FIND_ME Task 6-->
+<!--Please change the template so it will look like this on desktop:-->
+<!-- src/assets/view_modal_desktop.png-->
+<!--And like this on mobile.-->
+<!-- src/assets/view_mobile_desktop.png-->
+<!--Breakpoint is 600px-->
+<!--Bonus: make image always fit to square of 300x300px-->

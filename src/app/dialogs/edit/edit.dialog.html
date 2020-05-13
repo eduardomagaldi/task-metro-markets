@@ -1,0 +1,37 @@
+<div class="container">
+  <h3 mat-dialog-title>Product id: {{data.id}}</h3>
+
+  <form class="mat-dialog-content" #formControl="ngForm">
+
+    <div class="form">
+      <mat-form-field color="accent">
+        <textarea matInput class="form-control" placeholder="Name" [(ngModel)]="data.name" name="name" required ></textarea>
+        <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form">
+      <mat-form-field color="accent">
+        <input matInput class="form-control" placeholder="Image URL" [(ngModel)]="data.image" name="image" required >
+        <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form">
+        <mat-form-field color="accent">
+          <input matInput placeholder="Url" [(ngModel)]="data.url" name="url">
+        </mat-form-field>
+    </div>
+
+    <div class="form">
+      <mat-form-field color="accent">
+        <input matInput placeholder="Price" [(ngModel)]="data.price" name="price">
+      </mat-form-field>
+    </div>
+
+    <div mat-dialog-actions>
+      <button mat-button type="submit" [disabled]="!formControl.valid" [mat-dialog-close]="1" (click)="onUpdate()">Save</button>
+      <button mat-button (click)="onCancel()" tabindex="-1">Cancel</button>
+    </div>
+  </form>
+</div>
