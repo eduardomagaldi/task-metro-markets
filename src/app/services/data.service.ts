@@ -19,10 +19,6 @@ export class DataService {
     });
   }
 
-  // get data(): Product[] {
-  //   return this.dataList.value;
-  // }
-
   /**
    * FIND_ME Task 4
    * Currently data from Add and Edit modals is translated to

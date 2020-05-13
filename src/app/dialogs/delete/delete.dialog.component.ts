@@ -12,7 +12,7 @@ import { Product } from '../../models/product';
 export class DeleteDialogComponent {
 
   constructor(public dialogRef: MatDialogRef<DeleteDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { product: Product, dataService: DataService },
+              @Inject(MAT_DIALOG_DATA) public data: { product: Product, dataService: DataService },
   ) {
   }
 

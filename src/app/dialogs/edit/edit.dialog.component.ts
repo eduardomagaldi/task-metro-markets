@@ -12,7 +12,8 @@ import {Product} from '../../models/product';
 export class EditDialogComponent {
 
   constructor(public dialogRef: MatDialogRef<EditDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: Product, public dataService: DataService) { }
+              @Inject(MAT_DIALOG_DATA) public data: { product: Product, dataService: DataService },
+              ) { }
 
   formControl = new FormControl('', [
     Validators.required
@@ -29,6 +30,6 @@ export class EditDialogComponent {
   }
 
   onUpdate(): void {
-    this.dataService.updateIssue(this.data);
+    this.data.dataService.updateIssue(this.data.product);
   }
 }
