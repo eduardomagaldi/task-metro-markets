@@ -50,7 +50,7 @@ export class DataService {
          * fix issues to save items and totalCount from response to local state
          */
         this.dataList.next(data.items.map(el => this.mapToProduct(el)));
-        this.dataList.totalProductsCount = data.totalCount;
+        this.totalProductsCount.next(data.totalCount);
       });
   }
 

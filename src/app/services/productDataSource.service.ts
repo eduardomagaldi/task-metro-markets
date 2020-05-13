@@ -48,7 +48,7 @@ export class ProductDataSource extends DataSource<Product> {
        * - price
        * SO it could be substring of one of the properties (owar in "Samowar")
        */
-        this.filteredData = this.exampleDatabase.data.slice().filter((issue: Product) => {});
+        this.filteredData = this.exampleDatabase.data.slice().filter((issue: Product) => { return issue; });
 
         // Sort filtered data
         const sortedData = this.sortData(this.filteredData.slice());
