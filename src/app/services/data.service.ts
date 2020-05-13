@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, Output, EventEmitter} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {Product} from '../models/product';
@@ -6,12 +6,13 @@ import {ResponseProduct} from '../models/responseProduct';
 
 @Injectable()
 export class DataService {
+  @Output() dialogData: EventEmitter<Product> = new EventEmitter();
+
   private readonly API_URL = 'https://app-search.prod.de.metro-marketplace.cloud/api/search';
   private readonly PRODUCT_PAGE_BASE_URL = 'https://www.metro.de/marktplatz/product/';
 
   dataList: BehaviorSubject<Product[]> = new BehaviorSubject<Product[]>([]);
   totalProductsCount: BehaviorSubject<number> = new BehaviorSubject<number>(0);
-  dialogData: any;
 
   constructor (private httpClient: HttpClient) {}
 
@@ -31,9 +32,6 @@ export class DataService {
    *
    * Hint for non-angular - @Output EventEmitter
    */
-  getDialogData() {
-    return this.dialogData;
-  }
 
   /** CRUD METHODS */
   getProducts(): void {
@@ -76,11 +74,11 @@ export class DataService {
    * Aim is to remove access to this.exampleDatabase.dataList.value from outside of this service and make `dataList` private.
    */
   addIssue (issue: Product): void {
-    this.dialogData = issue;
+    this.dialogData.emit(issue);
   }
 
   updateIssue (issue: Product): void {
-    this.dialogData = issue;
+    this.dialogData.emit(issue);
   }
 
   deleteIssue (id: number): void {}

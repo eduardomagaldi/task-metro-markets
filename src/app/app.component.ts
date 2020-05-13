@@ -11,6 +11,7 @@ import {fromEvent} from 'rxjs';
 import {ProductDataSource} from './services/productDataSource.service';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {ViewDialogComponent} from './dialogs/view/view.dialog.component';
+import { Product } from './models/product';
 
 @Component({
   selector: 'app-root',
@@ -26,6 +27,7 @@ export class AppComponent implements OnInit {
   pageEvent: PageEvent;
   index: number;
   id: number;
+  dialogData: Product;
 
   constructor(public httpClient: HttpClient,
               public dialog: MatDialog,
@@ -37,6 +39,10 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.loadData();
+
+    this.dataService.dialogData.subscribe((dialogData: Product) => {
+      this.dialogData = dialogData;
+    });
   }
 
   refresh() {
@@ -47,7 +53,7 @@ export class AppComponent implements OnInit {
     const dialogRef = this.dialog.open(AddDialogComponent);
 
     dialogRef.afterClosed().subscribe(() => {
-      this.exampleDatabase.dataList.value.push(this.dataService.getDialogData());
+      this.exampleDatabase.dataList.value.push(this.dialogData);
       this.refreshTable();
     });
   }
@@ -65,7 +71,7 @@ export class AppComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(() => {
       const foundIndex = this.exampleDatabase.dataList.value.findIndex(x => x.id === id);
-      this.exampleDatabase.dataList.value[foundIndex] = this.dataService.getDialogData();
+      this.exampleDatabase.dataList.value[foundIndex] = this.dialogData;
       this.refreshTable();
     });
   }
