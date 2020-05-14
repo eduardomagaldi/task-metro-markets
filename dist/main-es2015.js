@@ -250,8 +250,8 @@ class AppComponent {
         this.paginator._changePageSize(this.paginator.pageSize);
     }
     loadData() {
-        this.exampleDatabase = this.exampleDatabase || new _services_data_service__WEBPACK_IMPORTED_MODULE_1__["DataService"](this.httpClient);
-        this.dataSource = this.dataSource || new _services_productDataSource_service__WEBPACK_IMPORTED_MODULE_10__["ProductDataSource"](this.exampleDatabase, this.paginator, this.sort);
+        this.exampleDatabase = new _services_data_service__WEBPACK_IMPORTED_MODULE_1__["DataService"](this.httpClient);
+        this.dataSource = new _services_productDataSource_service__WEBPACK_IMPORTED_MODULE_10__["ProductDataSource"](this.exampleDatabase, this.paginator, this.sort);
         this.exampleDatabase.totalProductsCount.subscribe(val => this.totalCount = val);
         Object(rxjs__WEBPACK_IMPORTED_MODULE_9__["fromEvent"])(this.filter.nativeElement, 'keyup').pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_11__["debounceTime"])(150), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_11__["distinctUntilChanged"])())
             .subscribe(() => {
@@ -269,7 +269,7 @@ class AppComponent {
      * This function is being executed on every pagination request.
      */
     getServerData(event) {
-        console.log(event);
+        this.exampleDatabase.getProducts((event.pageIndex * event.pageSize).toString());
         return event;
     }
 }
@@ -1049,10 +1049,10 @@ class DataService {
      * Hint for non-angular - @Output EventEmitter
      */
     /** CRUD METHODS */
-    getProducts() {
+    getProducts(ofset) {
         this.httpClient.get(this.API_URL, {
             params: {
-                offset: '0',
+                offset: ofset || '0',
                 limit: '10',
                 'filter[top][phrase]': 'samowar teekocher',
                 'sort[price]': 'desc'
@@ -1180,9 +1180,7 @@ class ProductDataSource extends _angular_cdk_collections__WEBPACK_IMPORTED_MODUL
             this.filteredData = this.exampleDatabase.filter(filter);
             // Sort filtered data
             const sortedData = this.sortData(this.filteredData.slice());
-            // Grab the page's slice of the filtered sorted data.
-            const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
-            this.renderedData = sortedData.splice(startIndex, this.paginator.pageSize);
+            this.renderedData = sortedData.slice();
             return this.renderedData;
         }));
     }

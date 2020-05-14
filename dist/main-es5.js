@@ -533,8 +533,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         value: function loadData() {
           var _this4 = this;
 
-          this.exampleDatabase = this.exampleDatabase || new _services_data_service__WEBPACK_IMPORTED_MODULE_1__["DataService"](this.httpClient);
-          this.dataSource = this.dataSource || new _services_productDataSource_service__WEBPACK_IMPORTED_MODULE_10__["ProductDataSource"](this.exampleDatabase, this.paginator, this.sort);
+          this.exampleDatabase = new _services_data_service__WEBPACK_IMPORTED_MODULE_1__["DataService"](this.httpClient);
+          this.dataSource = new _services_productDataSource_service__WEBPACK_IMPORTED_MODULE_10__["ProductDataSource"](this.exampleDatabase, this.paginator, this.sort);
           this.exampleDatabase.totalProductsCount.subscribe(function (val) {
             return _this4.totalCount = val;
           });
@@ -556,7 +556,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "getServerData",
         value: function getServerData(event) {
-          console.log(event);
+          this.exampleDatabase.getProducts((event.pageIndex * event.pageSize).toString());
           return event;
         }
       }]);
@@ -2092,12 +2092,12 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
       _createClass(DataService, [{
         key: "getProducts",
-        value: function getProducts() {
+        value: function getProducts(ofset) {
           var _this6 = this;
 
           this.httpClient.get(this.API_URL, {
             params: {
-              offset: '0',
+              offset: ofset || '0',
               limit: '10',
               'filter[top][phrase]': 'samowar teekocher',
               'sort[price]': 'desc'
@@ -2292,11 +2292,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
             _this8.filteredData = _this8.exampleDatabase.filter(filter); // Sort filtered data
 
-            var sortedData = _this8.sortData(_this8.filteredData.slice()); // Grab the page's slice of the filtered sorted data.
+            var sortedData = _this8.sortData(_this8.filteredData.slice());
 
-
-            var startIndex = _this8.paginator.pageIndex * _this8.paginator.pageSize;
-            _this8.renderedData = sortedData.splice(startIndex, _this8.paginator.pageSize);
+            _this8.renderedData = sortedData.slice();
             return _this8.renderedData;
           }));
         }
