@@ -96,8 +96,8 @@ export class AppComponent implements OnInit {
   }
 
   public loadData() {
-    this.exampleDatabase = this.exampleDatabase || new DataService(this.httpClient);
-    this.dataSource = this.dataSource || new ProductDataSource(this.exampleDatabase, this.paginator, this.sort);
+    this.exampleDatabase = new DataService(this.httpClient);
+    this.dataSource = new ProductDataSource(this.exampleDatabase, this.paginator, this.sort);
     this.exampleDatabase.totalProductsCount.subscribe(val => this.totalCount = val);
     fromEvent(this.filter.nativeElement, 'keyup').pipe(debounceTime(150), distinctUntilChanged())
       .subscribe(() => {
@@ -116,7 +116,8 @@ export class AppComponent implements OnInit {
    * This function is being executed on every pagination request.
    */
   getServerData(event: PageEvent) {
-    console.log(event);
+    this.exampleDatabase.getProducts((event.pageIndex * event.pageSize).toString());
+
     return event;
   }
 }

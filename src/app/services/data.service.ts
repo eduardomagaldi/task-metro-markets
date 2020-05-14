@@ -33,10 +33,10 @@ export class DataService {
    */
 
   /** CRUD METHODS */
-  getProducts(): void {
+  getProducts(ofset?: string): void {
     this.httpClient.get<{items: ResponseProduct[], totalCount: number}>(this.API_URL, {
       params: {
-        offset: '0',
+        offset: ofset || '0',
         limit: '10',
         'filter[top][phrase]': 'samowar teekocher',
         'sort[price]': 'desc'
@@ -47,6 +47,7 @@ export class DataService {
          * fix issues to save items and totalCount from response to local state
          */
         this.dataList.next(data.items.map(el => this.mapToProduct(el)));
+
         this.totalProductsCount.next(data.totalCount);
       });
   }
