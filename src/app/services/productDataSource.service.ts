@@ -49,15 +49,12 @@ export class ProductDataSource extends DataSource<Product> {
        * SO it could be substring of one of the properties (owar in "Samowar")
        */
         const filter = this.filterChange.getValue().toUpperCase();
-
         this.filteredData = this.exampleDatabase.filter(filter);
 
         // Sort filtered data
         const sortedData = this.sortData(this.filteredData.slice());
+        this.renderedData = sortedData.slice();
 
-        // Grab the page's slice of the filtered sorted data.
-        const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
-        this.renderedData = sortedData.splice(startIndex, this.paginator.pageSize);
         return this.renderedData;
       }
     ));
