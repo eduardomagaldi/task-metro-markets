@@ -8,6 +8,8 @@ import {Product} from '../../models/product';
   styleUrls: ['../../dialogs/view/view.dialog.css']
 })
 
+
+
 export class ViewDialogComponent {
   constructor(public dialogRef: MatDialogRef<ViewDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: {product: Product}) { }

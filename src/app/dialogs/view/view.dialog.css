@@ -1,19 +1,49 @@
-.container {
-  display: flex;
-  flex-direction: column;
-  min-width: 450px;
-}
-
 .container > * {
   width: 100%;
 }
 
-.form {
-  display: flex;
-  padding-top: 6px;
+::ng-deep .view-dialog-content {
+  min-height: 330px;
 }
 
-.mat-form-field {
-  font-size: 16px;
-  flex-grow: 1;
+::ng-deep .view-dialog-content .mat-grid-tile .mat-figure {
+  display: block;
+}
+
+.img-product {
+  max-width: 300px;
+  width: 100%;
+}
+
+.data {
+  margin-bottom: 20px;
+  display: block;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+}
+
+.column {
+  width: 50%;
+}
+
+@media (max-width: 600px) {
+  .row {
+    display: block;
+  }
+
+  .column {
+    width: 100%;
+  }
+
+  .column:first-child {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  ::ng-deep .view-dialog-content {
+    min-height: 530px;
+  }
 }

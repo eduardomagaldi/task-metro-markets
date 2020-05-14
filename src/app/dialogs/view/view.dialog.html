@@ -1,26 +1,22 @@
 <div class="container">
   <h3 mat-dialog-title>Product id: {{data.product.id}}</h3>
 
-  <form class="mat-dialog-content" #formControl="ngForm">
+  <form class="mat-dialog-content view-dialog-content" #formControl="ngForm">
 
-    <div class="form">
-      <span>{{data.product.id}}</span>
-    </div>
+    <div class="row">
+      <div class="column">
+        <img class="img-product" [src]="data.product.image" [alt]="data.product.name">
+      </div>
 
-    <div class="form">
-      <span>{{data.product.name}}</span>
-    </div>
+      <div class="column">
+        <span class="data">{{data.product.name}}</span>
 
-    <div class="form">
-      <span>{{data.product.image}}</span>
-    </div>
+        <span class="data">{{data.product.price}}</span>
 
-    <div class="form">
-      <span>{{data.product.url}}</span>
-    </div>
+        <hr>
 
-    <div class="form">
-      <span>{{data.product.price}}</span>
+        <a mat-button href="{{data.product.url}}">Buy</a>
+      </div>
     </div>
 
     <div mat-dialog-actions>
